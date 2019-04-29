@@ -225,7 +225,7 @@ def add_data_to_custom_columns(columns, result):
 				fieldname = column['fieldname']
 				key = (column['doctype'], fieldname)
 				link_field = column['link_field']
-				row[fieldname] = custom_fields_data.get(key, {}).get(row[link_field])
+				row[fieldname] = custom_fields_data.get(key, {}).get(row.get(link_field))
 
 	return data
 
@@ -360,6 +360,8 @@ def add_total_row(result, columns, meta = None):
 			options = col.get("options")
 
 		for row in result:
+			if i >= len(row): continue
+
 			cell = row.get(fieldname) if isinstance(row, dict) else row[i]
 			if fieldtype in ["Currency", "Int", "Float", "Percent"] and flt(cell):
 				total_row[i] = flt(total_row[i]) + flt(cell)
